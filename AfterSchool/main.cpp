@@ -44,8 +44,9 @@ int main(void)
 		{
 			player.move(0, 1);
 		}
-		
+
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
+		window.clear(Color::Black);
 		window.draw(player); // 윈도 화면에 player를 그려주겠다는 코드
 		window.display();
 	}
