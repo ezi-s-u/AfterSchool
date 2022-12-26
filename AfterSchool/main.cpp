@@ -15,11 +15,15 @@ int main(void)
 	player.setFillColor(Color::Red);
 	int player_speed = 5; // player의 속도 변수처리
 
-	RectangleShape enemy;
-	enemy.setSize(Vector2f(70, 70));
-	enemy.setPosition(500, 300);
-	enemy.setFillColor(Color::Yellow);
-	int enemy_life = 1;
+	RectangleShape enemy[5];
+	int enemy_life[5];
+	for (int i = 0; i < 5; i++)
+	{
+		enemy[i].setSize(Vector2f(70, 70));
+		enemy[i].setFillColor(Color::Yellow);
+		enemy_life[i] = 1;
+		enemy[i].setPosition(500, 100 * i);
+	}
 
 	// 윈도가 열려있을 때까지 반복
 	while (window.isOpen())
@@ -53,12 +57,15 @@ int main(void)
 		}
 
 		// enemy와의 충돌
-		if (enemy_life > 0) // enemy가 살아있을 때만 충돌처리
+		for (int i = 0; i < 5; i++)
 		{
-			if (player.getGlobalBounds().intersects(enemy.getGlobalBounds())) // 충돌했을 때
+			if (enemy_life[i] > 0) // enemy가 살아있을 때만 충돌처리
 			{
-				printf("enemy와 충돌\n");
-				enemy_life -= 1;
+				if (player.getGlobalBounds().intersects(enemy[i].getGlobalBounds())) // 충돌했을 때
+				{
+					printf("enemy[%d]와 충돌\n",i);
+					enemy_life[i] -= 1;
+				}
 			}
 		}
 
@@ -67,9 +74,11 @@ int main(void)
 		window.clear(Color::Black);
 
 		// draw는 나중에 호출할수록 우선순위가 높아짐 ★★★
+		for (int i = 0; i < 5; i++) {
+			if (enemy_life[i] > 0)
+				window.draw(enemy[i]);
+		}
 		window.draw(player);
-		if (enemy_life > 0)
-			window.draw(enemy);
 
 		window.display();
 	}
