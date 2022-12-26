@@ -19,7 +19,7 @@ int main(void)
 	enemy.setSize(Vector2f(70, 70));
 	enemy.setPosition(500, 300);
 	enemy.setFillColor(Color::Yellow);
-
+	int enemy_life = 1;
 
 	// 윈도가 열려있을 때까지 반복
 	while (window.isOpen())
@@ -52,9 +52,14 @@ int main(void)
 			player.move(0, player_speed);
 		}
 
-		if (player.getGlobalBounds().intersects(enemy.getGlobalBounds())) // 충돌했을 때
+		// enemy와의 충돌
+		if (enemy_life > 0) // enemy가 살아있을 때만 충돌처리
 		{
-			printf("enemy와 충돌\n");
+			if (player.getGlobalBounds().intersects(enemy.getGlobalBounds())) // 충돌했을 때
+			{
+				printf("enemy와 충돌\n");
+				enemy_life -= 1;
+			}
 		}
 
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
@@ -63,7 +68,8 @@ int main(void)
 
 		// draw는 나중에 호출할수록 우선순위가 높아짐 ★★★
 		window.draw(player);
-		window.draw(enemy);
+		if (enemy_life > 0)
+			window.draw(enemy);
 
 		window.display();
 	}
