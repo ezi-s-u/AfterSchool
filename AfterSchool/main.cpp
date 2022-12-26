@@ -7,6 +7,7 @@ int main(void)
 {
 	// 윈도창 생성
 	RenderWindow window(VideoMode(640, 480),"AfterSchool");
+	window.setFramerateLimit(60); // 1초에 60장을 보여주겠다는 의미
 
 	RectangleShape player;
 	player.setSize(Vector2f(40, 40));
@@ -26,6 +27,24 @@ int main(void)
 				window.close();  // 윈도를 닫는다
 			}
 		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Left))
+		{
+			player.move(-1, 0);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+			player.move(1, 0);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Up))
+		{
+			player.move(0, -1);
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Down))
+		{
+			player.move(0, 1);
+		}
+		
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
 		window.draw(player); // 윈도 화면에 player를 그려주겠다는 코드
 		window.display();
