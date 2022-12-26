@@ -29,19 +29,19 @@ int main(void)
 			}
 		}
 
-		if (Keyboard::isKeyPressed(Keyboard::Left))
+		if (Keyboard::isKeyPressed(Keyboard::Left)) // else를 쓰면 키를 동시에 누를 때 다른 명령은 실행되지 않음
 		{
 			player.move(-player_speed, 0);
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::Right))
+		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
 			player.move(player_speed, 0);
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::Up))
+		if (Keyboard::isKeyPressed(Keyboard::Up))
 		{
 			player.move(0, -player_speed);
 		}
-		else if (Keyboard::isKeyPressed(Keyboard::Down))
+		if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
 			player.move(0, player_speed);
 		}
