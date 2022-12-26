@@ -15,6 +15,12 @@ int main(void)
 	player.setFillColor(Color::Red);
 	int player_speed = 5; // player의 속도 변수처리
 
+	RectangleShape enemy;
+	enemy.setSize(Vector2f(70, 70));
+	enemy.setPosition(500, 300);
+	enemy.setFillColor(Color::Yellow);
+
+
 	// 윈도가 열려있을 때까지 반복
 	while (window.isOpen())
 	{
@@ -47,8 +53,13 @@ int main(void)
 		}
 
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
+		
 		window.clear(Color::Black);
+
+		// draw는 나중에 호출할수록 우선순위가 높아짐 ★★★
 		window.draw(player); // 윈도 화면에 player를 그려주겠다는 코드
+		window.draw(enemy); // 윈도 화면에 enemy를 그려주겠다는 코드
+
 		window.display();
 	}
 
