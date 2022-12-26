@@ -52,13 +52,18 @@ int main(void)
 			player.move(0, player_speed);
 		}
 
+		if (player.getGlobalBounds().intersects(enemy.getGlobalBounds())) // 충돌했을 때
+		{
+			printf("enemy와 충돌\n");
+		}
+
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
 		
 		window.clear(Color::Black);
 
 		// draw는 나중에 호출할수록 우선순위가 높아짐 ★★★
-		window.draw(player); // 윈도 화면에 player를 그려주겠다는 코드
-		window.draw(enemy); // 윈도 화면에 enemy를 그려주겠다는 코드
+		window.draw(player);
+		window.draw(enemy);
 
 		window.display();
 	}
