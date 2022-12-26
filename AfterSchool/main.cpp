@@ -13,6 +13,7 @@ int main(void)
 	player.setSize(Vector2f(40, 40));
 	player.setPosition(100, 100);
 	player.setFillColor(Color::Red);
+	int player_speed = 5; // player의 속도 변수처리
 
 	// 윈도가 열려있을 때까지 반복
 	while (window.isOpen())
@@ -30,19 +31,19 @@ int main(void)
 
 		if (Keyboard::isKeyPressed(Keyboard::Left))
 		{
-			player.move(-1, 0);
+			player.move(-player_speed, 0);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
-			player.move(1, 0);
+			player.move(player_speed, 0);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Up))
 		{
-			player.move(0, -1);
+			player.move(0, -player_speed);
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
-			player.move(0, 1);
+			player.move(0, player_speed);
 		}
 
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
