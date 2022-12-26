@@ -21,6 +21,7 @@ int main(void)
 
 	RectangleShape enemy[5];
 	int enemy_life[5];
+	// enemy 초기화
 	for (int i = 0; i < 5; i++)
 	{
 		enemy[i].setSize(Vector2f(70, 70));
@@ -43,6 +44,7 @@ int main(void)
 			}
 		}
 
+		// 방향키 설정 start
 		if (Keyboard::isKeyPressed(Keyboard::Left)) // else를 쓰면 키를 동시에 누를 때 다른 명령은 실행되지 않음
 		{
 			player.move(-player_speed, 0);
@@ -58,6 +60,21 @@ int main(void)
 		if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
 			player.move(0, player_speed);
+		} // 방향키 설정 end
+
+
+
+
+		// 스페이스 바 누르면 모든 enemy 다시 출현
+		if (Keyboard::isKeyPressed(Keyboard::Space))
+		{
+			for (int i = 0; i < 5; i++)
+			{
+				enemy[i].setSize(Vector2f(70, 70));
+				enemy[i].setFillColor(Color::Yellow);
+				enemy_life[i] = 1;
+				enemy[i].setPosition(rand() % 300 + 200, rand() % 380);
+			}
 		}
 
 		// enemy와의 충돌
