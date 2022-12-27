@@ -6,6 +6,12 @@
 
 using namespace sf;
 
+struct Player {
+	RectangleShape sprite;
+	int speed;
+	int score;
+};
+
 int main(void)
 {
 	// 윈도창 생성
@@ -36,13 +42,14 @@ int main(void)
 	bg_sprite.setTexture(bg_texture);
 	bg_sprite.setPosition(0, 0);
 
+
 	// 플레이어(player)
-	RectangleShape player;
-	player.setSize(Vector2f(40, 40));
-	player.setPosition(100, 100);
-	player.setFillColor(Color::Red);
-	int player_speed = 7; // player의 속도 변수처리
-	int player_score = 0;
+	struct Player player;
+	player.sprite.setSize(Vector2f(40, 40));
+	player.sprite.setPosition(100, 100);
+	player.sprite.setFillColor(Color::Red);
+	player.speed = 7; 
+	player.score = 0;
 
 	// 적(enemy)
 	const int ENEMY_NUM = 6;
@@ -103,19 +110,19 @@ int main(void)
 		// 방향키 설정 start
 		if (Keyboard::isKeyPressed(Keyboard::Left)) // else를 쓰면 키를 동시에 누를 때 다른 명령은 실행되지 않음
 		{
-			player.move(-player_speed, 0);
+			player.sprite.move(-player.speed, 0);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Right))
 		{
-			player.move(player_speed, 0);
+			player.sprite.move(player.speed, 0);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Up))
 		{
-			player.move(0, -player_speed);
+			player.sprite.move(0, -player.speed);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Down))
 		{
-			player.move(0, player_speed);
+			player.sprite.move(0, player.speed);
 		} // 방향키 설정 end
 
 
@@ -124,11 +131,11 @@ int main(void)
 			if (enemy_life[i] > 0) // enemy가 살아있을 때만 충돌처리
 			{
 				// enemy와의 충돌
-				if (player.getGlobalBounds().intersects(enemy[i].getGlobalBounds())) // 충돌했을 때
+				if (player.sprite.getGlobalBounds().intersects(enemy[i].getGlobalBounds())) // 충돌했을 때
 				{
 					printf("enemy[%d]와 충돌\n",i);
 					enemy_life[i] -= 1;
-					player_score += enemy_score;
+					player.score += enemy_score;
 
 					// TODO : 코드 refactoring 필요
 					if (enemy_life[i] == 0)
@@ -141,7 +148,7 @@ int main(void)
 			}
 		}
 
-		sprintf(info, "score:%d  time:%d\n", player_score, spent_time/1000);
+		sprintf(info, "score:%d  time:%d\n", player.score, spent_time/1000);
 		text.setString(info);
 
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
@@ -154,7 +161,7 @@ int main(void)
 			if (enemy_life[i] > 0)
 				window.draw(enemy[i]);
 		}
-		window.draw(player);
+		window.draw(player.sprite);
 		window.draw(text);
 
 		window.display();
