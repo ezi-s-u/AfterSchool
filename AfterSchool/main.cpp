@@ -32,6 +32,7 @@ int main(void)
 
 	long start_time = clock();  // 게임 시작시간
 	long spent_time;            // 게임 진행시간
+	int is_gameover = 0;
 
 	// text
 	Font font;
@@ -50,6 +51,12 @@ int main(void)
 	Sprite bg_sprite;
 	bg_sprite.setTexture(bg_texture);
 	bg_sprite.setPosition(0, 0);
+
+	Texture go_texture;
+	go_texture.loadFromFile("./resources/images/gameover.png");
+	Sprite go_sprite;
+	go_sprite.setTexture(go_texture);
+	go_sprite.setPosition(0, 0);
 
 
 	// 플레이어(player)
@@ -163,6 +170,11 @@ int main(void)
 			}
 		}
 
+		if (player.life <= 0)
+		{
+			is_gameover = 1;
+		}
+
 		sprintf(info, "life:%d  score:%d  time:%d\n", player.life, player.score, spent_time/1000);
 		text.setString(info);
 
@@ -178,6 +190,11 @@ int main(void)
 		}
 		window.draw(player.sprite);
 		window.draw(text);
+
+		if (is_gameover)
+		{
+			window.draw(go_sprite);
+		}
 
 		window.display();
 	}
