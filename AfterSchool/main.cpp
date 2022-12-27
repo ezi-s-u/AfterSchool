@@ -29,6 +29,13 @@ int main(void)
 	text.setPosition(5, 0);
 	char info[40];
 
+	// 배경
+	Texture bg_texture;
+	bg_texture.loadFromFile("./resources/images/background.png");
+	Sprite bg_sprite;
+	bg_sprite.setTexture(bg_texture);
+	bg_sprite.setPosition(0, 0);
+
 	// 플레이어(player)
 	RectangleShape player;
 	player.setSize(Vector2f(40, 40));
@@ -136,6 +143,7 @@ int main(void)
 		window.clear(Color::Black);
 
 		// draw는 나중에 호출할수록 우선순위가 높아짐
+		window.draw(bg_sprite);
 		for (int i = 0; i < 5; i++) {
 			if (enemy_life[i] > 0)
 				window.draw(enemy[i]);
