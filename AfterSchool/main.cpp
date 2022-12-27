@@ -18,10 +18,10 @@ int main(void)
 
 	Text text;
 	text.setFont(font);
-	text.setCharacterSize(40);  // 글자크기 조절
+	text.setCharacterSize(40);
 	text.setFillColor(Color(255, 255, 255));
 	text.setPosition(5, 0);
-	text.setString("score");
+	char info[40];
 
 	RectangleShape player;
 	player.setSize(Vector2f(40, 40));
@@ -107,7 +107,8 @@ int main(void)
 			}
 		}
 
-		printf("score : %d\n", player_score);
+		sprintf(info, "score : %d\n", player_score);
+		text.setString(info);
 
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
 		
