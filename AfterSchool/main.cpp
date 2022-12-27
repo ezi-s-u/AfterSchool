@@ -10,6 +10,7 @@ struct Player {
 	RectangleShape sprite;
 	int speed;
 	int score;
+	int life;
 };
 
 struct Enemy {
@@ -58,6 +59,7 @@ int main(void)
 	player.sprite.setFillColor(Color::Red);
 	player.speed = 7; 
 	player.score = 0;
+	player.life = 3;
 
 	// 적(enemy)
 	const int ENEMY_NUM = 6;
@@ -77,7 +79,7 @@ int main(void)
 		enemy[i].sprite.setFillColor(Color::Yellow);
 		enemy[i].sprite.setPosition(rand()%300+300, rand()%380);
 		enemy[i].life = 1;
-		enemy[i].speed = -(rand() % 10 + 1);
+		enemy[i].speed = -(rand() % 5 + 1);
 	}
 
 	// 윈도가 열려있을 때까지 반복
@@ -151,12 +153,17 @@ int main(void)
 						enemy[i].explosion_sound.play();
 					}
 				}
-
+				// 적이 왼쪽 끝에 진입하려는 순간
+				else if (enemy[i].sprite.getPosition().x < 0)
+				{
+					player.life -= 1; // player의 목숨 감소
+					enemy[i].life = 0;
+				}
 				enemy[i].sprite.move(enemy[i].speed, 0);
 			}
 		}
 
-		sprintf(info, "score:%d  time:%d\n", player.score, spent_time/1000);
+		sprintf(info, "life:%d  score:%d  time:%d\n", player.life, player.score, spent_time/1000);
 		text.setString(info);
 
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
