@@ -13,6 +13,16 @@ int main(void)
 
 	srand(time(0));
 
+	Font font;
+	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
+
+	Text text;
+	text.setFont(font);
+	text.setCharacterSize(40);  // 글자크기 조절
+	text.setFillColor(Color(255, 255, 255));
+	text.setPosition(5, 0);
+	text.setString("score");
+
 	RectangleShape player;
 	player.setSize(Vector2f(40, 40));
 	player.setPosition(100, 100);
@@ -103,12 +113,13 @@ int main(void)
 		
 		window.clear(Color::Black);
 
-		// draw는 나중에 호출할수록 우선순위가 높아짐 ★★★
+		// draw는 나중에 호출할수록 우선순위가 높아짐
 		for (int i = 0; i < 5; i++) {
 			if (enemy_life[i] > 0)
 				window.draw(enemy[i]);
 		}
 		window.draw(player);
+		window.draw(text);
 
 		window.display();
 	}
