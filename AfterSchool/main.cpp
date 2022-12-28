@@ -30,6 +30,12 @@ struct Enemy {
 	int respawn_time;
 };
 
+// obj1과 obj2의 충돌여부. 충돌하면 1을 반환, 충돌안하면 0을 반환.
+int is_collide(RectangleShape obj1, RectangleShape obj2)
+{
+	return obj1.getGlobalBounds().intersects(obj2.getGlobalBounds());
+}
+
 // 전역변수
 const int ENEMY_NUM = 6;  // 적(enemy)의 개수
 const int W_WIDTH = 1200, W_HEIGHT = 600;   // 창의 크기
@@ -202,8 +208,7 @@ int main(void)
 			{
 				// TODO : 총알이 관통하는 버그를 수정할 것
 				// enemy와의 충돌
-				if (player.sprite.getGlobalBounds().intersects(enemy[i].sprite.getGlobalBounds())
-					|| bullet.sprite.getGlobalBounds().intersects(enemy[i].sprite.getGlobalBounds())) // 충돌했을 때
+				if (is_collide(player.sprite, enemy[i].sprite) || is_collide(bullet.sprite, enemy[i].sprite)) // 충돌했을 때
 				{
 					enemy[i].life -= 1;
 					player.score += enemy[i].score;
