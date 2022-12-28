@@ -200,8 +200,10 @@ int main(void)
 			}
 			if (enemy[i].life > 0) // enemy가 살아있을 때만 충돌처리
 			{
+				// TODO : 총알이 관통하는 버그를 수정할 것
 				// enemy와의 충돌
-				if (player.sprite.getGlobalBounds().intersects(enemy[i].sprite.getGlobalBounds())) // 충돌했을 때
+				if (player.sprite.getGlobalBounds().intersects(enemy[i].sprite.getGlobalBounds())
+					|| bullet.sprite.getGlobalBounds().intersects(enemy[i].sprite.getGlobalBounds())) // 충돌했을 때
 				{
 					enemy[i].life -= 1;
 					player.score += enemy[i].score;
