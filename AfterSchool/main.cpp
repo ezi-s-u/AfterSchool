@@ -206,9 +206,8 @@ int main(void)
 			}
 			if (enemy[i].life > 0) // enemy가 살아있을 때만 충돌처리
 			{
-				// TODO : 총알이 관통하는 버그를 수정할 것
-				// enemy와의 충돌
-				if (is_collide(player.sprite, enemy[i].sprite) || is_collide(bullet.sprite, enemy[i].sprite)) // 충돌했을 때
+				// player, enemy 충돌
+				if (is_collide(player.sprite, enemy[i].sprite))// 충돌했을 때
 				{
 					enemy[i].life -= 1;
 					player.score += enemy[i].score;
@@ -225,11 +224,24 @@ int main(void)
 					player.life -= 1; // player의 목숨 감소
 					enemy[i].life = 0;
 				}
+
+				if(is_collide(bullet.sprite, enemy[i].sprite))
+				{
+					enemy[i].life -= 1;
+					player.score += enemy[i].score;
+
+					// TODO : 코드 refactoring 필요
+					if (enemy[i].life == 0)
+					{
+						enemy[i].explosion_sound.play();
+					}
+					bullet.is_fired = 0;
+				}
+
 				enemy[i].sprite.move(enemy[i].speed, 0);
 			}
 		}
 
-		// TODO : 총알이 평생 한 번만 발사되는 버그를 수정하기
 		if (bullet.is_fired)
 		{
 			bullet.sprite.move(bullet.speed, 0);
