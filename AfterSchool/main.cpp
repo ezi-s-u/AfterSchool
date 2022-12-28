@@ -11,6 +11,13 @@ struct Player {
 	int speed;
 	int score;
 	int life;
+	float x, y;   // 플레이어 좌표
+};
+
+struct Bullet {
+	RectangleShape sprite;
+	int speed;
+	int is_fired;    // 발사 여부
 };
 
 struct Enemy {
@@ -31,7 +38,7 @@ const int GO_WIDTH = 320, GO_HEIGHT = 240;  // 게임오버 화면의 크기
 int main(void)
 {
 	// 윈도창 생성
-	RenderWindow window(VideoMode(W_WIDTH, W_HEIGHT),"AfterSchool");
+	RenderWindow window(VideoMode(W_WIDTH, W_HEIGHT), "AfterSchool");
 	window.setFramerateLimit(60); // 1초에 60장을 보여주겠다는 의미
 
 	srand(time(0));
@@ -71,21 +78,30 @@ int main(void)
 	go_texture.loadFromFile("./resources/images/gameover.png");
 	Sprite go_sprite;
 	go_sprite.setTexture(go_texture);
-	go_sprite.setPosition((W_WIDTH - GO_WIDTH)/2, (W_HEIGHT - GO_HEIGHT)/2);
+	go_sprite.setPosition((W_WIDTH - GO_WIDTH) / 2, (W_HEIGHT - GO_HEIGHT) / 2);
 
 
 	// 플레이어(player)
 	struct Player player;
 	player.sprite.setSize(Vector2f(40, 40));
 	player.sprite.setPosition(100, 100);
+	player.x = player.sprite.getPosition().x;
+	player.y = player.sprite.getPosition().y;
 	player.sprite.setFillColor(Color::Red);
-	player.speed = 7; 
+	player.speed = 7;
 	player.score = 0;
 	player.life = 10;
 
+	// 총알
+	struct Bullet bullet;
+	bullet.sprite.setSize(Vector2f(10, 10));
+	bullet.sprite.setPosition(player.x + 50, player.y + 15);   // 임시 테스트
+	bullet.speed = 20;
+	bullet.is_fired = 0;
+
 	// 적(enemy)
 	struct Enemy enemy[ENEMY_NUM];
-	
+
 
 	// enemy 초기화
 	for (int i = 0; i < ENEMY_NUM; i++)
@@ -98,7 +114,7 @@ int main(void)
 
 		enemy[i].sprite.setSize(Vector2f(70, 70));
 		enemy[i].sprite.setFillColor(Color::Yellow);
-		enemy[i].sprite.setPosition(rand()%300+W_WIDTH*0.9, rand()%380);
+		enemy[i].sprite.setPosition(rand() % 300 + W_WIDTH * 0.9, rand() % 380);
 		enemy[i].life = 1;
 		enemy[i].speed = -(rand() % 7 + 1);
 	}
@@ -111,11 +127,11 @@ int main(void)
 		{
 			switch (event.type)
 			{
-			// 종료(x) 버튼을 누르면 Event::Closed(0)
+				// 종료(x) 버튼을 누르면 Event::Closed(0)
 			case Event::Closed:
 				window.close();  // 윈도를 닫는다
 				break;
-			// 키보드를 눌렀을 때(누른 순간만을 감지)
+				// 키보드를 눌렀을 때(누른 순간만을 감지)
 			case Event::KeyPressed:
 			{
 				// 스페이스 바 누르면 모든 enemy 다시 출현
@@ -160,21 +176,20 @@ int main(void)
 		for (int i = 0; i < ENEMY_NUM; i++)
 		{
 			// 10초마다 적(enemy)이 젠
-			if (spent_time % (1000*enemy[i].respawn_time) < 1000 / 60 + 1)
+			if (spent_time % (1000 * enemy[i].respawn_time) < 1000 / 60 + 1)
 			{
 				enemy[i].sprite.setSize(Vector2f(70, 70));
 				enemy[i].sprite.setFillColor(Color::Yellow);
 				enemy[i].sprite.setPosition(rand() % 300 + W_WIDTH * 0.9, rand() % 380);
 				enemy[i].life = 1;
 				// 10초마다 적(enemy)의 속도 +1
-				enemy[i].speed = -(rand() % 10 + 1 + (spent_time/10000/enemy[i].respawn_time));
+				enemy[i].speed = -(rand() % 10 + 1 + (spent_time / 10000 / enemy[i].respawn_time));
 			}
 			if (enemy[i].life > 0) // enemy가 살아있을 때만 충돌처리
 			{
 				// enemy와의 충돌
 				if (player.sprite.getGlobalBounds().intersects(enemy[i].sprite.getGlobalBounds())) // 충돌했을 때
 				{
-					printf("enemy[%d]와 충돌\n",i);
 					enemy[i].life -= 1;
 					player.score += enemy[i].score;
 
@@ -199,11 +214,11 @@ int main(void)
 			is_gameover = 1;
 		}
 
-		sprintf(info, "life:%d  score:%d  time:%d\n", player.life, player.score, spent_time/1000);
+		sprintf(info, "life:%d  score:%d  time:%d\n", player.life, player.score, spent_time / 1000);
 		text.setString(info);
 
 		// 계속 그려져야 하기 때문에 반복문 안에 넣어야 함
-		
+
 		window.clear(Color::Black);
 
 		// draw는 나중에 호출할수록 우선순위가 높아짐
@@ -214,6 +229,7 @@ int main(void)
 		}
 		window.draw(player.sprite);
 		window.draw(text);
+		window.draw(bullet.sprite);
 
 		if (is_gameover)
 		{
