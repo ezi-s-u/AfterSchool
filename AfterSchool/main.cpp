@@ -30,6 +30,13 @@ struct Enemy {
 	int respawn_time;
 };
 
+struct Textures {
+	Texture bg;        // 배경 이미지
+	Texture enemy;     // 적 이미지
+	Texture gameover;  // 게임오버 이미지
+	Texture player;    // 플레이어 이미지
+};
+
 // obj1과 obj2의 충돌여부. 충돌하면 1을 반환, 충돌안하면 0을 반환.
 int is_collide(RectangleShape obj1, RectangleShape obj2)
 {
@@ -43,6 +50,12 @@ const int GO_WIDTH = 320, GO_HEIGHT = 240;  // 게임오버 화면의 크기
 
 int main(void)
 {
+	struct Textures t;
+	t.bg.loadFromFile("./resources/images/background.jpg");
+	t.enemy.loadFromFile("./resources/images/enemy.png");
+	t.gameover.loadFromFile("./resources/images/gameover.png");
+	t.player.loadFromFile("./resources/images/player.png");
+
 	// 윈도창 생성
 	RenderWindow window(VideoMode(W_WIDTH, W_HEIGHT), "AfterSchool");
 	window.setFramerateLimit(60); // 1초에 60장을 보여주겠다는 의미
@@ -73,27 +86,23 @@ int main(void)
 	char info[40];
 
 	// 배경
-	Texture bg_texture;
-	bg_texture.loadFromFile("./resources/images/background.jpg");
 	Sprite bg_sprite;
-	bg_sprite.setTexture(bg_texture);
+	bg_sprite.setTexture(t.bg);
 	bg_sprite.setPosition(0, 0);
 
 	// 게임오버 화면
-	Texture go_texture;
-	go_texture.loadFromFile("./resources/images/gameover.png");
 	Sprite go_sprite;
-	go_sprite.setTexture(go_texture);
+	go_sprite.setTexture(t.gameover);
 	go_sprite.setPosition((W_WIDTH - GO_WIDTH) / 2, (W_HEIGHT - GO_HEIGHT) / 2);
 
 
 	// 플레이어(player)
 	struct Player player;
-	player.sprite.setSize(Vector2f(40, 40));
+	player.sprite.setSize(Vector2f(170, 78));
+	player.sprite.setTexture(&t.player);
 	player.sprite.setPosition(100, 100);
 	player.x = player.sprite.getPosition().x;
 	player.y = player.sprite.getPosition().y;
-	player.sprite.setFillColor(Color::Red);
 	player.speed = 7;
 	player.score = 0;
 	player.life = 10;
@@ -118,7 +127,8 @@ int main(void)
 		enemy[i].score = 100;   // 적을 잡을 때 얻는 점수
 		enemy[i].respawn_time = 8;
 
-		enemy[i].sprite.setSize(Vector2f(70, 70));
+		enemy[i].sprite.setTexture(&t.enemy);
+		enemy[i].sprite.setSize(Vector2f(150, 71));
 		enemy[i].sprite.setFillColor(Color::Yellow);
 		enemy[i].sprite.setPosition(rand() % 300 + W_WIDTH * 0.9, rand() % 380);
 		enemy[i].life = 1;
@@ -197,7 +207,7 @@ int main(void)
 			// 10초마다 적(enemy)이 젠
 			if (spent_time % (1000 * enemy[i].respawn_time) < 1000 / 60 + 1)
 			{
-				enemy[i].sprite.setSize(Vector2f(70, 70));
+				enemy[i].sprite.setSize(Vector2f(150, 71));
 				enemy[i].sprite.setFillColor(Color::Yellow);
 				enemy[i].sprite.setPosition(rand() % 300 + W_WIDTH * 0.9, rand() % 380);
 				enemy[i].life = 1;
