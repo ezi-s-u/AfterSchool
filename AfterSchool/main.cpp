@@ -22,10 +22,15 @@ struct Enemy {
 	Sound explosion_sound;
 };
 
+// 전역변수
+const int ENEMY_NUM = 6;  // 적(enemy)의 개수
+const int W_WIDTH = 640, W_HEIGHT = 480;   // 창의 크기
+const int GO_WIDTH = 320, GO_HEIGHT = 240;  // 게임오버 화면의 크기
+
 int main(void)
 {
 	// 윈도창 생성
-	RenderWindow window(VideoMode(640, 480),"AfterSchool");
+	RenderWindow window(VideoMode(W_WIDTH, W_HEIGHT),"AfterSchool");
 	window.setFramerateLimit(60); // 1초에 60장을 보여주겠다는 의미
 
 	srand(time(0));
@@ -52,11 +57,12 @@ int main(void)
 	bg_sprite.setTexture(bg_texture);
 	bg_sprite.setPosition(0, 0);
 
+	// 게임오버 화면
 	Texture go_texture;
 	go_texture.loadFromFile("./resources/images/gameover.png");
 	Sprite go_sprite;
 	go_sprite.setTexture(go_texture);
-	go_sprite.setPosition(0, 0);
+	go_sprite.setPosition((W_WIDTH - GO_WIDTH)/2, (W_HEIGHT - GO_HEIGHT)/2);
 
 
 	// 플레이어(player)
@@ -69,9 +75,7 @@ int main(void)
 	player.life = 3;
 
 	// 적(enemy)
-	const int ENEMY_NUM = 6;
-
-	struct Enemy enemy[ENEMY_NUM];
+		struct Enemy enemy[ENEMY_NUM];
 	
 
 	// enemy 초기화
