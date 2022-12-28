@@ -20,11 +20,12 @@ struct Enemy {
 	int score;
 	SoundBuffer explosion_buffer;
 	Sound explosion_sound;
+	int respawn_time;
 };
 
 // 전역변수
 const int ENEMY_NUM = 6;  // 적(enemy)의 개수
-const int W_WIDTH = 640, W_HEIGHT = 480;   // 창의 크기
+const int W_WIDTH = 1200, W_HEIGHT = 600;   // 창의 크기
 const int GO_WIDTH = 320, GO_HEIGHT = 240;  // 게임오버 화면의 크기
 
 int main(void)
@@ -52,7 +53,7 @@ int main(void)
 
 	// 배경
 	Texture bg_texture;
-	bg_texture.loadFromFile("./resources/images/background.png");
+	bg_texture.loadFromFile("./resources/images/background.jpg");
 	Sprite bg_sprite;
 	bg_sprite.setTexture(bg_texture);
 	bg_sprite.setPosition(0, 0);
@@ -72,10 +73,10 @@ int main(void)
 	player.sprite.setFillColor(Color::Red);
 	player.speed = 7; 
 	player.score = 0;
-	player.life = 3;
+	player.life = 10;
 
 	// 적(enemy)
-		struct Enemy enemy[ENEMY_NUM];
+	struct Enemy enemy[ENEMY_NUM];
 	
 
 	// enemy 초기화
@@ -85,12 +86,13 @@ int main(void)
 		enemy[i].explosion_buffer.loadFromFile("./resources/sounds/rumble.flac");
 		enemy[i].explosion_sound.setBuffer(enemy[i].explosion_buffer);
 		enemy[i].score = 100;   // 적을 잡을 때 얻는 점수
+		enemy[i].respawn_time = 8;
 
 		enemy[i].sprite.setSize(Vector2f(70, 70));
 		enemy[i].sprite.setFillColor(Color::Yellow);
-		enemy[i].sprite.setPosition(rand()%300+300, rand()%380);
+		enemy[i].sprite.setPosition(rand()%300+W_WIDTH*0.9, rand()%380);
 		enemy[i].life = 1;
-		enemy[i].speed = -(rand() % 5 + 1);
+		enemy[i].speed = -(rand() % 7 + 1);
 	}
 
 	// 윈도가 열려있을 때까지 반복
@@ -115,7 +117,7 @@ int main(void)
 					{
 						enemy[i].sprite.setSize(Vector2f(70, 70));
 						enemy[i].sprite.setFillColor(Color::Yellow);
-						enemy[i].sprite.setPosition(rand() % 300 + 300, rand() % 380);
+						enemy[i].sprite.setPosition(rand() % 300 + W_WIDTH * 0.9, rand() % 380);
 						enemy[i].life = 1;
 						enemy[i].speed = -(rand() % 10 + 1);
 					}
@@ -149,6 +151,16 @@ int main(void)
 
 		for (int i = 0; i < ENEMY_NUM; i++)
 		{
+			// 10초마다 적(enemy)이 젠
+			if (spent_time % (1000*enemy[i].respawn_time) < 1000 / 60 + 1)
+			{
+				enemy[i].sprite.setSize(Vector2f(70, 70));
+				enemy[i].sprite.setFillColor(Color::Yellow);
+				enemy[i].sprite.setPosition(rand() % 300 + W_WIDTH * 0.9, rand() % 380);
+				enemy[i].life = 1;
+				// 10초마다 적(enemy)의 속도 +1
+				enemy[i].speed = -(rand() % 10 + 1 + (spent_time/10000/enemy[i].respawn_time));
+			}
 			if (enemy[i].life > 0) // enemy가 살아있을 때만 충돌처리
 			{
 				// enemy와의 충돌
@@ -198,6 +210,7 @@ int main(void)
 		if (is_gameover)
 		{
 			window.draw(go_sprite);
+			// TODO : 게임이 멈추는 것을 구현할 것
 		}
 
 		window.display();
