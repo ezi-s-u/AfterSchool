@@ -91,7 +91,7 @@ int main(void)
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		// TODO : 굉장히 비효율적인 코드이므로 나중에 refactoring
-		enemy[i].explosion_buffer.loadFromFile("./resources/sounds/rumble.flac");
+		enemy[i].explosion_buffer.loadFromFile("./resources/sounds/boom.flac");
 		enemy[i].explosion_sound.setBuffer(enemy[i].explosion_buffer);
 		enemy[i].score = 100;   // 적을 잡을 때 얻는 점수
 		enemy[i].respawn_time = 8;

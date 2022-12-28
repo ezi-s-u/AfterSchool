@@ -10,5 +10,5 @@ BGM :Lady of the 80's
 https://pixabay.com/ko/music/-lady-of-the-80x27s-128379/
 
 Sound Effects
-1 - 
-https://opengameart.org/content/rumbleexplosion
+1 - Laser_shooting_sx
+https://opengameart.org/content/lasershootingsx
