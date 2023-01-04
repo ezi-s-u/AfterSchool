@@ -21,9 +21,10 @@ int main(void)
 	window.setFramerateLimit(60);
 
 	struct Player p;
-	p.sprite.setSize(Vector2f(80, 80));
+	p.sprite.setSize(Vector2f(70, 70));
 	p.sprite.setPosition(440, 340);
 	p.sprite.setFillColor(Color::Magenta);
+	p.speed = 7;
 
 	// 윈도가 열려있을 때까지 반복
 	while (window.isOpen())
@@ -38,6 +39,26 @@ int main(void)
 				window.close();  // 윈도를 닫는다
 			}
 		}
+
+		// 방향키 설정 start
+		if (Keyboard::isKeyPressed(Keyboard::Left)) // else를 쓰면 키를 동시에 누를 때 다른 명령은 실행되지 않음
+		{
+			p.sprite.move(-p.speed, 0);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Right))
+		{
+			p.sprite.move(p.speed, 0);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Up))
+		{
+			p.sprite.move(0, -p.speed);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Down))
+		{
+			p.sprite.move(0, p.speed);
+		} // 방향키 설정 end
+
+		window.clear(Color::Black);
 
 		window.draw(p.sprite);
 
