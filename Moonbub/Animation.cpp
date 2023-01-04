@@ -17,8 +17,12 @@ int main(void)
 {
 	RenderWindow window(VideoMode(1200, 800), "Animation");
 	window.setFramerateLimit(60);
+
 	long start_time;
 	long spent_time;
+
+	int gravity = 10; // 중력
+
 	Texture run[10];
 	run[0].loadFromFile("./animation/Run__000.png");
 	run[1].loadFromFile("./animation/Run__001.png");
@@ -81,7 +85,7 @@ int main(void)
 			player.sprite.setTexture(&run[player.idx % player.frames]);
 			player.idx++;
 		}
-
+		player.sprite.move(0, gravity);   // 중력이 작용한다.
 		window.clear(Color::Magenta);
 		window.draw(player.sprite);
 		window.display();
