@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<time.h>
 #include<SFML/Audio.hpp>
+#include<Windows.h>
 
 using namespace sf;
 
@@ -50,6 +51,13 @@ const int GO_WIDTH = 320, GO_HEIGHT = 240;  // 게임오버 화면의 크기
 
 int main(void)
 {
+// console을 가리기 위한 방법
+// WARNING 이 방법은 콘솔창을 제거하는 것이 아니라 메모리 낭비가 됨
+#ifdef WIN32
+	HWND hwnd = GetConsoleWindow();
+	ShowWindow(hwnd, SW_HIDE);
+#endif
+
 	struct Textures t;
 	t.bg.loadFromFile("./resources/images/background.jpg");
 	t.enemy.loadFromFile("./resources/images/enemy.png");
