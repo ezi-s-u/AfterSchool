@@ -6,7 +6,6 @@
 #include<Windows.h>
 
 using namespace sf;
-
 struct Player {
 	RectangleShape sprite;
 	int speed;

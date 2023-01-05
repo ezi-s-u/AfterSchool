@@ -29,15 +29,13 @@ int is_collide(RectangleShape obj1, RectangleShape obj2)
 const int W_WIDTH = 880, W_HEIGHT = 680;   // 창의 크기
 const int OBSTACLE_COUNT = 5;              // 장애물 개수
 
+
 int main(void)
 {
 	RenderWindow window(VideoMode(W_WIDTH, W_HEIGHT), "MyProject");
 	window.setFramerateLimit(60);
 
 	srand((unsigned int)time(NULL));
-
-	long start_time = clock();
-	long spent_time;
 
 	struct Player p;
 	p.sprite.setSize(Vector2f(50, 50));
@@ -64,9 +62,14 @@ int main(void)
 		oRight[i].life = 1;
 	}
 
+	long start_time = clock();
+	long r_time = start_time;
+	long spent_time;
+
 	// 윈도가 열려있을 때까지 반복
 	while (window.isOpen())
 	{
+		spent_time = clock() - start_time;
 		Event event;
 		while (window.pollEvent(event))
 		{
@@ -77,8 +80,6 @@ int main(void)
 				window.close();  // 윈도를 닫는다
 			}
 		}
-
-		spent_time = clock() - start_time;
 
 		// 방향키 설정 start
 		if (Keyboard::isKeyPressed(Keyboard::Left)) // else를 쓰면 키를 동시에 누를 때 다른 명령은 실행되지 않음
@@ -97,12 +98,13 @@ int main(void)
 		{
 			p.sprite.move(0, p.speed);
 		} // 방향키 설정 end
-
-		for (int i = 0; i < OBSTACLE_COUNT; i++)
+		
+		// TODO : 10초마다 적(enemy)이 젠
+		if (spent_time - r_time > 10000)
 		{
-			// 10초마다 적(enemy)이 젠
-			if (spent_time % 1000 < 1000 / 60 + 1)
+			for (int i = 0; i < OBSTACLE_COUNT; i++)
 			{
+				r_time = spent_time;
 				oLeft[i].sprite.setSize(Vector2f(70, 70));
 				oLeft[i].sprite.setPosition(rand() % -100, rand() % 680);
 				oLeft[i].sprite.setFillColor(Color::White);
@@ -118,7 +120,9 @@ int main(void)
 				oLeft[i].speed += 1;
 				oRight[i].speed += 1;
 			}
-
+		}
+		for (int i = 0; i < OBSTACLE_COUNT; i++)
+		{
 			if (oLeft[i].life > 0)
 			{
 				// player, obstacle 충돌
@@ -152,25 +156,20 @@ int main(void)
 
 				oRight[i].sprite.move(-oRight[i].speed, 0);
 			}
-
-			printf("%d\n", p.score);
-
-
-
-
-
-			window.clear(Color::Black);
-
-			for (int i = 0; i < OBSTACLE_COUNT; i++)
-			{
-				if (oLeft[i].life > 0)
-					window.draw(oLeft[i].sprite);
-				if (oRight[i].life > 0)
-					window.draw(oRight[i].sprite);
-			}
-			window.draw(p.sprite);
-
-			window.display();
 		}
+
+		window.clear(Color::Black);
+
+		for (int i = 0; i < OBSTACLE_COUNT; i++)
+		{
+			if (oLeft[i].life > 0)
+				window.draw(oLeft[i].sprite);
+			if (oRight[i].life > 0)
+				window.draw(oRight[i].sprite);
+		}
+		window.draw(p.sprite);
+
+		window.display();
+
 	}
 }
