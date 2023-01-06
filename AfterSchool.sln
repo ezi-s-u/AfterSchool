@@ -16,6 +16,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Myproject", "Myproject\Mypr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mp3", "mp3\mp3.vcxproj", "{805CC2A6-4C8A-47F4-920A-6D8557BB111C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mysql_ex", "mysql_ex\mysql_ex.vcxproj", "{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -56,6 +58,14 @@ Global
 		{805CC2A6-4C8A-47F4-920A-6D8557BB111C}.Release|x64.Build.0 = Release|x64
 		{805CC2A6-4C8A-47F4-920A-6D8557BB111C}.Release|x86.ActiveCfg = Release|Win32
 		{805CC2A6-4C8A-47F4-920A-6D8557BB111C}.Release|x86.Build.0 = Release|Win32
+		{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}.Debug|x64.ActiveCfg = Debug|x64
+		{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}.Debug|x64.Build.0 = Debug|x64
+		{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}.Debug|x86.ActiveCfg = Debug|Win32
+		{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}.Debug|x86.Build.0 = Debug|Win32
+		{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}.Release|x64.ActiveCfg = Release|x64
+		{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}.Release|x64.Build.0 = Release|x64
+		{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}.Release|x86.ActiveCfg = Release|Win32
+		{155A82D1-4F28-46C0-BE5B-7A7CA2CA2FE9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
