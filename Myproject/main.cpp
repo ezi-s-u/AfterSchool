@@ -20,6 +20,10 @@ struct Obstacle {
 	int respawn_time;
 };
 
+struct Goal {
+
+};
+
 // obj1과 obj2의 충돌여부. 충돌하면 1을 반환, 충돌안하면 0을 반환.
 int is_collide(RectangleShape obj1, RectangleShape obj2)
 {
