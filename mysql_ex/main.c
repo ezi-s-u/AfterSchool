@@ -15,6 +15,20 @@ int main(void)
 		printf("DB 연결 성공");
 		
 
+	int query_result;
+
+	// INSERT
+	char insert_q[50] = "INSERT INTO korea VALUES('TOKO', 100000)";
+
+	// Query 실행
+	query_result = mysql_query(connection, insert_q);
+	
+	if (query_result == 0)
+		printf("%s 성공\n", insert_q);
+	else
+		printf("%s 실패\n", insert_q);
+
+
 		
 	mysql_close(&mysql);    // mysql 종료
 }
